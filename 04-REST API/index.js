@@ -2,21 +2,26 @@ const express = require('express');
 // const users = require('./MOCK_DATA.json');
 const app = express();
 const fs = require('fs');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+const {connectMongoDb} = require('./connection')
+
+const userRouter = require('./routes/user')
+const {logReqRes} = require("./middlewares/index")
 
 const { log } = require('console');
 const PORT = 8000;
 
 
 //connection 
-mongoose.connect('mongodb://127.0.0.1:27017/New-Demo')
+connectMongoDb('mongodb://127.0.0.1:27017/New-Demo');
+/* mongoose.connect('mongodb://127.0.0.1:27017/New-Demo')
 .then(() => console.log("MongoDB Connected"))
-.catch((err) => console.log("Mongo Error",err));
+.catch((err) => console.log("Mongo Error",err)); */
 
 
 
 //Schema
-const userSchema = new mongoose.Schema({
+/* const userSchema = new mongoose.Schema({
     firstName:{
         type:String,
         required:true,
@@ -35,10 +40,10 @@ const userSchema = new mongoose.Schema({
     gender:{
         type:String,
     }
-}, { timestamps: true });
+}, { timestamps: true }); */
 
 //Model
-const User = mongoose.model('user',userSchema)
+/* const User = mongoose.model('user',userSchema) */
 
 
 
@@ -46,8 +51,8 @@ const User = mongoose.model('user',userSchema)
 //Middleware
 app.use(express.urlencoded({extended:false}));
 
-app.use((req,res,next) => {
-    fs.appendFile(
+app.use(logReqRes("log.txt"));
+/*     fs.appendFile(
         "log.txt",
         `${Date.now()}:${req.ip} ${req.method}: ${req.path}\n`,
         (err, data) => {
@@ -61,10 +66,10 @@ app.use((req,res,next) => {
 app.use((req,res,next) => {
     console.log("Hello from middleware 2");
     next()
-})
+}) */
 
 //Routes
-app.get("/users", async(req, res) => {
+/* app.get("/users", async(req, res) => {
     const allDbUsers = await User.find({});
     const html = `
         <ul>
@@ -132,8 +137,10 @@ app.delete("/api/users/:id",async (req, res) =>{
     await User.findByIdAndDelete(req.params.id);
     return res.json({status: "Success"});
 })
+ */
 
 
+app.use("/user", userRouter);
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
 
