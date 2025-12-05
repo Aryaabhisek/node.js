@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const {handleGetAllUsers} = require('../controllers/user');
+
 // router.get("/", async(req, res) => {
 //     const allDbUsers = await User.find({});
 //     const html = `
@@ -14,11 +16,7 @@ const router = express.Router();
 
 //REST API
 
-router.get("/",async (req, res) => {
-    //res.setHeader("MyName","Arya");  //custom headers
-    const allDbUsers = await User.find({});
-    return res.json(allDbUsers);
-})
+router.get("/",handleGetAllUsers);
 
 router.get("/:id",async (req, res) => {
     const user = await User.findById(req.params.id)
