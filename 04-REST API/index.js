@@ -13,7 +13,9 @@ const PORT = 8000;
 
 
 //connection 
-connectMongoDb('mongodb://127.0.0.1:27017/New-Demo');
+connectMongoDb("mongodb://127.0.0.1:27017/New-Demo").then(() => 
+    console.log("MongoDB Connected")
+);
 /* mongoose.connect('mongodb://127.0.0.1:27017/New-Demo')
 .then(() => console.log("MongoDB Connected"))
 .catch((err) => console.log("Mongo Error",err)); */
@@ -140,7 +142,7 @@ app.delete("/api/users/:id",async (req, res) =>{
  */
 
 
-app.use("/user", userRouter);
+app.use("/api/user", userRouter);
 
 app.listen(PORT, () => console.log(`Server started at port ${PORT}`));
 
